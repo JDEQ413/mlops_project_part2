@@ -1,0 +1,37 @@
+repos:
+
+- repo: https://github.com/pycqa/isort
+  rev: 5.12.0
+  hooks:
+  - id: isort
+
+- repo: https://github.com/PyCQA/autoflake
+  rev: v2.2.0
+  hooks:
+  - id: autoflake
+    name: autoflake
+    entry: autoflake
+    language: python
+    require_serial: true
+    types: [python]
+    args:
+      [
+        --in-place,
+        --expand-star-imports,
+        #--remove-duplicate-keys,
+        --remove-unused-variables,
+        --remove-all-unused-imports
+      ]
+
+- repo: https://github.com/pre-commit/mirrors-autopep8
+  rev: ''  # Specify a specific version/tag/commit or leave empty for the latest version
+  hooks:
+  - id: autopep8
+    exclude: '^$'  # Specify files or patterns to exclude, '^$' excludes nothing (all files will be checked)
+    args: [--select=E/W, --verbose,  --in-place, --aggressive, --aggressive]
+
+- repo: https://github.com/PyCQA/flake8
+  rev: 6.1.0
+  hooks:
+  - id: flake8
+    args: [--ignore=E501] #,--ignore=F401]
