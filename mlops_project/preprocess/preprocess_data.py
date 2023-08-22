@@ -4,6 +4,10 @@ import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.preprocessing import StandardScaler
+from utilities.custom_loging import CustomLogging
+
+logger = CustomLogging()
+logger = logger.Create_Logger(logger_name='preprocess_data.log')
 
 
 class MissingIndicator(BaseEstimator, TransformerMixin):
@@ -82,6 +86,7 @@ class MissingIndicator(BaseEstimator, TransformerMixin):
         X = X.copy()
         for var in self.variables:
             X[f'{var}_nan'] = X[var].isnull().astype(int) * 1
+        logger.debug("MissingIndicador transformer applied.")
 
         return X
 
@@ -181,6 +186,7 @@ class IQR_DropOutliers (BaseEstimator, TransformerMixin):
 
         # Droping outliers found
         X = X.drop(outlieres_list, axis=0).reset_index(drop=True)
+        logger.debug("IQR_DropOutliers transformer applied.")
 
         return X
 
@@ -271,6 +277,7 @@ class DropMissing (BaseEstimator, TransformerMixin):
         # Droping records with missing found
         X = X.drop(self.nans_list, axis=0).reset_index(drop=True)
         X = X.drop(nan_columns, axis=1)               # Drops columns with postfix 'nan'
+        logger.debug("DropMissing transformer applied.")
 
         return X
 
@@ -348,6 +355,7 @@ class OneHotEncoder(BaseEstimator, TransformerMixin):
         X = X.copy()
         X = pd.concat([X, pd.get_dummies(X[self.features], drop_first=False)], axis=1)
         X.drop(self.features, axis=1)
+        logger.debug("OneHotEncoder transformer applied.")
 
         return X
 
@@ -434,5 +442,6 @@ class Standard_Scaler(BaseEstimator, TransformerMixin):
         X_features_transformed = pd.DataFrame(self.standard_scaler.fit_transform(X[self.features]))
         X_features_transformed.columns = self.features
         X = pd.concat([X_features_transformed, X[self.target]], axis=1)
+        logger.debug("Standard_Scaler transformer applied.")
 
         return X

@@ -2,6 +2,10 @@ import os
 
 import pandas as pd
 from kaggle.api.kaggle_api_extended import KaggleApi
+from utilities.custom_loging import CustomLogging
+
+logger = CustomLogging()
+logger = logger.Create_Logger(logger_name='load_data.log')
 
 
 class DataRetriever():
@@ -34,6 +38,7 @@ class DataRetriever():
 
         self.api = KaggleApi()
         self.api.authenticate()
+        logger.info("Kaggle authentication succesfully made.")
 
     def retrieve_data(self) -> bool:
         # Downloads dataset from kaggle with pre-defined structure (folder)
@@ -43,15 +48,17 @@ class DataRetriever():
         # Moves the file to default data directory instead of downloaded folder
         if os.path.isfile(self.DATASETS_DIR + self.KAGGLE_FILE):            # Searches for the new file downloaded inside default data directory
             os.remove(self.DATASETS_DIR + self.KAGGLE_FILE)                 # ,and deletes it
+            logger.warning("Previous data.csv existing file was deleted.")
         if os.path.isfile(self.DATASETS_DIR + self.DATA_RETRIEVED):           # Searches for any old file with FILE_NAME specified
             os.remove(self.DATASETS_DIR + self.DATA_RETRIEVED)                # ,and deletes it too
         os.rename(self.KAGGLE_FILE, self.DATASETS_DIR + self.DATA_RETRIEVED)     # Finally, moves downloaded file to default datasets folder
-        print("Dataset retrieved and stored in: " + self.DATASETS_DIR + self.DATA_RETRIEVED)
+        logger.info("Dataset retrieved and stored in: " + self.DATASETS_DIR + self.DATA_RETRIEVED)
 
         return True
 
     def load_data(self) -> pd.DataFrame:
         df = pd.read_csv(self.DATASETS_DIR + self.DATA_RETRIEVED, delimiter=",")
+        logger.info("Dataset was loaded successfully.")
         return df
 
 # Usage example:

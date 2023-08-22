@@ -10,6 +10,10 @@ from sklearn import metrics
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import cross_val_score
 from sklearn.pipeline import Pipeline
+from utilities.custom_loging import CustomLogging
+
+logger = CustomLogging()
+logger = logger.Create_Logger(logger_name='train_data.log')
 
 
 class HousepricingDataPipeline:
@@ -59,6 +63,7 @@ class HousepricingDataPipeline:
                 # ('scaler', StandardScaler())
             ]
         )
+        logger.debug("HousepricingDataPipeline created.")
         return self.PIPELINE
 
     def fit_random_forest(self, X_train, y_train):
@@ -76,11 +81,13 @@ class HousepricingDataPipeline:
         self.y_train = y_train
         self.model = RandomForestRegressor(n_estimators=100, random_state=self.SEED_MODEL)
         self.model.fit(self.X_train, self.y_train)
+        logger.debug("RandomForest model fitted.")
         return self.model
 
     def predict(self, X_test):
         self.X_test = X_test
         self.y_pred = self.model.predict(self.X_test)
+        logger.debug("RandomForest 'predict' was requested.")
         return self.y_pred
 
     def get_evaluation_metrics(self, y_test):
@@ -101,6 +108,7 @@ class HousepricingDataPipeline:
 
         self.scores_df = pd.DataFrame(data=[[R2, adjusted_r2, CV_R2, RMSE]], columns=['R2 Score', 'Adjusted R2 Score', 'Cross Validated R2 Score', 'RMSE'])
         self.scores_df.insert(0, 'Model', 'Random Forest')
+        logger.debug("Evaluation metrics were requested.")
 
         return self.scores_df
 
@@ -112,8 +120,7 @@ class HousepricingDataPipeline:
         if os.path.isdir(trained_model_dir):
             joblib.dump(self.model, trained_model_dir + file_save_name)
 
-        print()
-        print("Model stored in: " + trained_model_dir + file_save_name)
+        logger.info("Model stored in: " + trained_model_dir + file_save_name)
 
     def make_prediction(self, X_values, selected_features, features=None):
         """
@@ -129,4 +136,5 @@ class HousepricingDataPipeline:
         X_values = X_values[selected_features].copy()
         X_values = np.asanyarray(X_values)
 
+        logger.info("'make_prediction' was requested. Prediction: " + str(self.model.predict(X_values)))
         print(self.model.predict(X_values))
