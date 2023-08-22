@@ -4,16 +4,14 @@ import os
 
 import pandas as pd
 from load.load_data import DataRetriever
-# from predictor.model_predictor import ModelPredictor
 from sklearn.model_selection import train_test_split
 from train.train_data import HousepricingDataPipeline
 
 MAIN_DIR = './mlops_project/'
 DATASETS_DIR = MAIN_DIR + 'data/'
-KAGGLE_URL = "https://www.kaggle.com/datasets/fedesoriano/the-boston-houseprice-data"
-KAGGLE_LOCAL_DIR = KAGGLE_URL.split('/')[-1]
+KAGGLE_URL = "fedesoriano/the-boston-houseprice-data"
+KAGGLE_FILE = 'boston.csv'
 DATA_RETRIEVED = 'data.csv'
-FULL_USER_DIR = "Users/usuario/Documents/GitHub/mlops_project/"
 
 COLUMNS = ['CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 'DIS', 'RAD', 'TAX', 'PTRATIO', 'B', 'LSTAT', 'MEDV']
 TARGET = 'MEDV'
@@ -34,10 +32,15 @@ droped_rows_index_list = []
 if __name__ == "__main__":
 
     print(os.getcwd())
-    os.chdir("C:/" + FULL_USER_DIR)
+    # os.chdir("C:/" + FULL_USER_DIR)
+
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    parent_dir = os.path.abspath(os.path.join(current_dir, ".."))
+    os.chdir(parent_dir)
 
     # Retrieve data
-    data_retriever = DataRetriever([DATASETS_DIR, KAGGLE_URL, KAGGLE_LOCAL_DIR, DATA_RETRIEVED])
+    # data_retriever = DataRetriever([DATASETS_DIR, KAGGLE_URL, KAGGLE_LOCAL_DIR, DATA_RETRIEVED])
+    data_retriever = DataRetriever([MAIN_DIR, DATASETS_DIR, KAGGLE_URL, KAGGLE_FILE, DATA_RETRIEVED])
     result = data_retriever.retrieve_data()
 
     # Read data

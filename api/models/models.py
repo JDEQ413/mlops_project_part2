@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 class HousePricing(BaseModel):
     """
-    Represents a passenger on the Titanic with various attributes.
+    Represents a house in boston with various attributes.
 
     Attributes:
         crim (float): per capita crime rate by town
