@@ -127,5 +127,6 @@ class HousepricingDataPipeline:
         if features is not None:
             X_values.columns = features
         X_values = X_values[selected_features].copy()
+        X_values = np.asanyarray(X_values)
 
         print(self.model.predict(X_values))

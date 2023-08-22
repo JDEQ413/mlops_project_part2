@@ -34,4 +34,4 @@ repos:
   rev: 6.1.0
   hooks:
   - id: flake8
-    args: [--ignore=E501] #,--ignore=F401]
+    args: ['--ignore=E501,E402'] #,--ignore=F401]

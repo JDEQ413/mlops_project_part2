@@ -7,6 +7,11 @@ from starlette.responses import JSONResponse
 
 from api.models.models import HousePricing
 from mlops_project.predictor.api_predict import ModelAPIPredictor
+from mlops_project.utilities.custom_loging import CustomLogging
+
+# Initializes logger
+logger = CustomLogging()
+logger = logger.Create_Logger(logger_name="main_fast_api.log", flag_streamer=True)
 
 # Add the parent directory to sys.path
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -28,11 +33,13 @@ Values are required after de endpoint.
 
 @app.get('/', status_code=200)
 async def healthcheck():
+    logger.info("Healthcheck requested.")
     return 'HousePricing Regressor is ready to go!'
 
 
 @app.post('/predict')
 def predictor(housepricing_features: HousePricing):
+    logger.info("Prediction requested.")
     predictor = ModelAPIPredictor(model_path + "\\random_forest_output.pkl")
     X = [
         housepricing_features.crim,

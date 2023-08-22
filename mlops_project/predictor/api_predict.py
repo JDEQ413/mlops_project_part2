@@ -1,6 +1,19 @@
 import argparse
+import os
+import sys
 
 import joblib
+
+# setting path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.abspath(os.path.join(current_dir, ".."))
+sys.path.append(parent_dir)
+os.chdir(parent_dir)
+
+from utilities.custom_loging import CustomLogging
+
+logger = CustomLogging()
+logger = logger.Create_Logger(logger_name='api_predict.log')
 
 
 class ModelAPIPredictor:
@@ -22,6 +35,7 @@ class ModelAPIPredictor:
         Parameters:
             model_path (str): Path to the trained model file (joblib format).
         """
+        logger.debug("ModelAPIPredictor initiated.")
         self.model = joblib.load(model_path)
 
     def predict(self, new_data):
@@ -34,6 +48,7 @@ class ModelAPIPredictor:
         Returns:
             Predicted outputs from the model.
         """
+        logger.debug("Prediction was requested.")
         return self.model.predict(new_data)
 
 
@@ -49,4 +64,5 @@ if __name__ == "__main__":
     new_data = args.new_data
 
     predictions = predictor.predict(new_data)
+    logger.debug("Prediction generated.")
     print(predictions)
