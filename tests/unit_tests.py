@@ -7,8 +7,12 @@ import pytest
 
 # from mlops_project.load.load_data import DataRetriever
 from mlops_project.preprocess.preprocess_data import MissingIndicator
+from mlops_project.utilities.custom_loging import CustomLogging
 
 # from mlops_project.train.train_data import HousepricingDataPipeline
+
+logger = CustomLogging()
+logger = logger.Create_Logger(logger_name='unit_test.log')
 
 
 def test_csv_file_existence():
@@ -16,6 +20,7 @@ def test_csv_file_existence():
     Test case to check if the data csv file exists.
     """
 
+    logger.debug("Running 'file existance' unit test.")
     MAIN_DIR = './mlops_project/'
     DATASETS_DIR = MAIN_DIR + 'data/'
     DATA_RETRIEVED = 'data.csv'
@@ -39,6 +44,8 @@ def test_missing_indicator_transform():
 
     Note: Make sure to replace 'your_module' with the actual module name where the MissingIndicator class is defined.
     """
+
+    logger.debug("Running 'missing indicador transform' unit test.")
     # Sample DataFrame with missing values
     data = [[1.1, 1.7, 0.0, None, 5.08], [2.4, None, 0.1, 10.5, 6.09]]
     df = pd.DataFrame(data, columns=['C1', 'C2', 'C3', 'C4', 'C5'], index=None)
@@ -49,15 +56,18 @@ def test_missing_indicator_transform():
     expected_columns = ['C1_nan', 'C2_nan', 'C3_nan', 'C4_nan', 'C5_nan']
     assert all(col in df_transformed.columns for col in expected_columns), \
         f"The dataframe after transformer must include the following additional columns: {expected_columns}"
+    logger.debug("Missing indicator columns created successfully in dataframe.")
 
     # Check if the missing indicator values are correct
     expected_values = [0, 0, 0, 1, 0]
     assert all(df_transformed[expected_columns].head(1) == expected_values), \
         f"Expected values for first sample: {expected_values}"
+    logger.debug("Missing indicator values in first row are correct.")
 
     expected_values = [0, 1, 0, 0, 0]
     assert all(df_transformed[expected_columns].tail(1) == expected_values), \
         f"Expected values for second sample: {expected_values}"
+    logger.debug("Missing indicator values in second row are correct.")
 
     # Check if the original DataFrame is not modified
     assert 'C1_nan' not in df.columns, "The original DataFrame should not be modified."
@@ -74,6 +84,8 @@ def test_missing_indicator_fit():
 
     Note: Make sure to replace 'your_module' with the actual module name where the MissingIndicator class is defined.
     """
+
+    logger.debug("Running 'Missing indicator instance' unit test.")
     # Sample DataFrame
     data = [[1.1, 1.7, 0.0, None, 5.08], [2.4, None, 0.1, 10.5, 6.09]]
     df = pd.DataFrame(data, columns=['C1', 'C2', 'C3', 'C4', 'C5'], index=None)
@@ -94,6 +106,7 @@ def test_trained_model_existence():
     Test case to check if the trained model exists.
     """
 
+    logger.debug("Running 'trained model existence' unit test.")
     MAIN_DIR = './mlops_project/'
     DATASETS_DIR = MAIN_DIR + 'models/'
     DATA_RETRIEVED = 'random_forest_output.pkl'

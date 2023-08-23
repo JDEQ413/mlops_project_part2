@@ -1,27 +1,16 @@
 
-import os
-import sys
-
-from fastapi import FastAPI
-from starlette.responses import JSONResponse
 
 from api.models.models import HousePricing
-from mlops_project.predictor.api_predict import ModelAPIPredictor
-from mlops_project.utilities.custom_loging import CustomLogging
+from fastapi import FastAPI
+from predictor.api_predict import ModelAPIPredictor
+from starlette.responses import JSONResponse
+from utilities.custom_loging import CustomLogging
 
 # Initializes logger
 logger = CustomLogging()
 logger = logger.Create_Logger(logger_name="main_fast_api.log", flag_streamer=True)
 
-# Add the parent directory to sys.path
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.abspath(os.path.join(current_dir, ".."))
-sys.path.append(current_dir)
-
-relative_path = "mlops_project\\models"
-model_path = os.path.join(os.path.abspath(parent_dir), relative_path)
-# relative_path = os.path.relpath("C:/Users/usuario/Documents/GitHub/mlops_project/mlops_project/models/random_forest_output.pkl",current_dir)
-
+model_path = "./models/"
 
 app = FastAPI()
 
@@ -40,7 +29,7 @@ async def healthcheck():
 @app.post('/predict')
 def predictor(housepricing_features: HousePricing):
     logger.info("Prediction requested.")
-    predictor = ModelAPIPredictor(model_path + "\\random_forest_output.pkl")
+    predictor = ModelAPIPredictor(model_path + "random_forest_output.pkl")
     X = [
         housepricing_features.crim,
         housepricing_features.zn,
@@ -57,4 +46,5 @@ def predictor(housepricing_features: HousePricing):
         housepricing_features.lstat
     ]
     prediction = predictor.predict([X])
+    logger.debug("Prediction was made: " + str(prediction))
     return JSONResponse(f"Resultado predicción: {prediction}")

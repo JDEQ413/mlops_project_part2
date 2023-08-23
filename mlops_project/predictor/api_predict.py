@@ -1,15 +1,6 @@
 import argparse
-import os
-import sys
 
 import joblib
-
-# setting path
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.abspath(os.path.join(current_dir, ".."))
-sys.path.append(parent_dir)
-os.chdir(parent_dir)
-
 from utilities.custom_loging import CustomLogging
 
 logger = CustomLogging()

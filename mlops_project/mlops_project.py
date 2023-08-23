@@ -39,9 +39,8 @@ if __name__ == "__main__":
     # Retrieve data
     # data_retriever = DataRetriever([DATASETS_DIR, KAGGLE_URL, KAGGLE_LOCAL_DIR, DATA_RETRIEVED])
     data_retriever = DataRetriever([MAIN_DIR, DATASETS_DIR, KAGGLE_URL, KAGGLE_FILE, DATA_RETRIEVED])
-    logger.debug("Data retriever instantiated.")
     result = data_retriever.retrieve_data()
-    logger.debug("Data retrieved.")
+    logger.debug("Data retrieved from source.")
 
     # Read data
     raw_df = data_retriever.load_data()
@@ -57,7 +56,7 @@ if __name__ == "__main__":
     # Creating and training model
     RF_model = housepricing_pipeline.fit_random_forest(X_train=X_train, y_train=y_train)
     RF_model.fit(X_train, y_train)
-    logger.info("Random Forest model was fitted.")
+    logger.info("Random Forest model fitted.")
 
     # Model making a prediction on test data, and persisting the model
     # predictor = ModelPredictor(model=RF_model, X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test, trained_model_dir=TRAINED_MODEL_DIR, file_save_name=PIPELINE_SAVE_FILE)
@@ -69,7 +68,6 @@ if __name__ == "__main__":
     logger.info("Model generated into .pkl file.")
 
     # Predictions with new information
-    logger.info("Making predictions with new information")
     new_data_pred = pd.DataFrame([[0.06905, 0.0, 2.18, 0, 0.458, 7.147, 54.2, 6.0622, 3, 222.0, 18.7, 396.90, 5.33]])
     housepricing_pipeline.make_prediction(X_values=new_data_pred, features=FEATURES, selected_features=SELECTED_FEATURES)
     logger.info("Prediction example 1. Done.")
