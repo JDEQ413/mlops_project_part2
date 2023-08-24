@@ -1,0 +1,28 @@
+version: "3.10"
+
+services:
+  server:
+    build: server
+    command: uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port 8000
+    ports:
+      - 8000:8000
+    networks:
+      AIservice:
+        aliases:
+          - server.docker
+
+  api:
+    build: api
+    command: uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port 3000
+    ports:
+      - 3000:3000
+    networks:
+      AIservice:
+        aliases:
+          - api.docker
+    depends_on:
+      - server
+
+networks:
+  AIservice:
+    external: true

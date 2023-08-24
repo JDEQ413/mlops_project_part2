@@ -6,8 +6,8 @@ import pandas as pd
 import pytest
 
 # from mlops_project.load.load_data import DataRetriever
-from mlops_project.preprocess.preprocess_data import MissingIndicator
-from mlops_project.utilities.custom_loging import CustomLogging
+from server.preprocess.preprocess_data import MissingIndicator
+from server.utilities.custom_loging import CustomLogging
 
 # from mlops_project.train.train_data import HousepricingDataPipeline
 

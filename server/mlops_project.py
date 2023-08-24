@@ -7,10 +7,10 @@ from train.train_data import HousepricingDataPipeline
 from utilities.custom_loging import CustomLogging
 
 logger = CustomLogging()
-logger = logger.Create_Logger(logger_name='mlops_project.log', flag_streamer=True)
+logger = logger.Create_Logger(logger_name='server.log', flag_streamer=True)
 logger.info("Logger started.")
 
-MAIN_DIR = './mlops_project/'
+MAIN_DIR = './server/'
 DATASETS_DIR = MAIN_DIR + 'data/'
 KAGGLE_URL = "fedesoriano/the-boston-houseprice-data"
 KAGGLE_FILE = 'boston.csv'

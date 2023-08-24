@@ -2,7 +2,7 @@ import os
 
 import pandas as pd
 
-from mlops_project.preprocess.preprocess_data import MissingIndicator
+from server.preprocess.preprocess_data import MissingIndicator
 
 
 def data_exists(path: str, filename: str) -> bool:
