@@ -44,7 +44,9 @@ This the baseline of the project.
  
 * **.py file** is the result of first steps to acomplish refactorization, and is the base to separate sections in folders.
   * It may be found at [house-price.py](https://github.com/JDEQ413/mlops_project/blob/main/docs/house-price.py)
- 
+
+
+***To run this project and extract data from kaggle directly, follow instructions on this [link](https://towardsdatascience.com/how-to-search-and-download-data-using-kaggle-api-f815f7b98080)**
 
 ## Module 2 - Basic concepts and tools for software development
 
@@ -247,6 +249,110 @@ This the baseline of the project.
 
 * Ensure you are in the root folder.
 * Run the following code to build the image:
+  ```
+  docker build -t house-image ./server/
+  ```
+  ![image](https://github.com/JDEQ413/mlops_project_part2/assets/139833546/8bf54c12-be51-4cf2-8240-148ba01a7e77)
+
+* Inspect the image created by running this command:
+  ```
+  docker images
+  ```
+  ![image](https://github.com/JDEQ413/mlops_project_part2/assets/139833546/af64ee71-2522-44f3-883d-465de4a78efa)
+  ![image](https://github.com/JDEQ413/mlops_project_part2/assets/139833546/a8d02575-b809-4264-997b-9c9583860ce2)
+  
+**REST API***
+
+* Run the next command to start the ```house-image``` image in a container.
+  ```
+  docker run -d --rm --name houseprice-c -p 8000:8000 house-image
+  ```
+  ![image](https://github.com/JDEQ413/mlops_project_part2/assets/139833546/679dce08-77dc-4b1d-843c-73836a0b10ff)
+
+* Check the container running.
+  ![image](https://github.com/JDEQ413/mlops_project_part2/assets/139833546/9bcf7d7f-0939-4482-b51c-db048b3bb217)
+
+**Endpoints**
+
+* ![image](https://github.com/JDEQ413/mlops_project_part2/assets/139833546/afd57a8c-ee67-434f-8b2c-b0623d0479aa)
+* ![image](https://github.com/JDEQ413/mlops_project_part2/assets/139833546/dd8d113d-faaf-41b9-8899-c5f5710fd9ae)
+
+**Prediction**
+
+* You can try it out every endpoint, one of them is ```predict```, and by giving the folloing values you will get a prediction.
+  ```
+  {
+    "crim": 0.06905,
+    "zn": 0.0,
+    "indus": 2.18,
+    "chas": 0,
+    "nox": 0.458,
+    "rm": 7.147,
+    "age": 54.2,
+    "dis": 6.0622,
+    "rad": 3,
+    "tax": 222.0,
+    "ptratio": 18.7,
+    "b": 396.90,
+    "lstat": 5.33
+  }
+  ```
+
+  ![image](https://github.com/JDEQ413/mlops_project_part2/assets/139833546/fb8eb93a-0442-47b5-81d5-ae5bd9c8620c)
+  ![image](https://github.com/JDEQ413/mlops_project_part2/assets/139833546/916909f2-56c8-4a79-b942-1e85fc782bc6)
+
+**Logs**
+
+* Run the command
+  ```
+  docker exec -it houseprice-c bash
+  ```
+* Check the existing files:
+  ```
+  ls
+  ```
+  
+  ![image](https://github.com/JDEQ413/mlops_project_part2/assets/139833546/f68edeb8-bc27-4933-82ab-bfe83f0c934e)
+
+* Open the file ```server_main.log``` and inspect the logs with this command:
+  ```
+  vim main_api.log
+  ```
+  ![image](https://github.com/JDEQ413/mlops_project_part2/assets/139833546/72a8972e-f457-4939-b64e-fab9608dd2f7)
+
+  * To exit from log, type:
+    ```
+    :qa! <<Enter>>
+    ```
+
+* Copy the logs to the root folder:
+  ```
+  docker cp titanic-c:/main_api.log .
+  ```
+  ![image](https://github.com/JDEQ413/mlops_project_part2/assets/139833546/78331da3-45f9-4689-b192-20b964eb08a9)
+
+**Delete**
+
+* Finally we will stop container and delete it, and so with image.
+  ```
+  docker stop titanic-c
+  ```
+  ```
+  docker ps -a
+  ```
+
+  ![image](https://github.com/JDEQ413/mlops_project_part2/assets/139833546/1d598c9a-2c21-4c4b-8985-c29cf1343435)
+
+  * Container is no longer running, nor exists.
+ 
+* Delete the image
+  ```
+  docker rmi titanic-image
+
+  ```
+  ![image](https://github.com/JDEQ413/mlops_project_part2/assets/139833546/ca880e22-6d93-4b59-b588-65770bc43b19)
+
+
 
 
 ### Docker-compose
@@ -273,7 +379,7 @@ This the baseline of the project.
 
 * Ensure you are in the directory where the docker-compose.yml file is located. In this case is root, so you can run the following to start the Server and Frontend APIs
   ```
-  docker-compose -f itesm_mlops_project/docker-compose.yml up --build
+  docker-compose -f docker-compose.yml up --build
   ```
 * If everything worked fine:
   * Images were created
