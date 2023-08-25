@@ -3,7 +3,7 @@ from fastapi import Body, FastAPI
 from utilities.custom_loging import CustomLogging
 
 # Initializes logger
-logger = CustomLogging
+logger = CustomLogging()
 logger = logger.Create_Logger(logger_name='api.log', flag_streamer=True)
 
 app = FastAPI()
